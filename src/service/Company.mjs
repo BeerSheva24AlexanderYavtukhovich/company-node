@@ -13,7 +13,7 @@ export default class Company {
     this.#setIterable();
   }
   #setIterable() {
-    this[Symbol.iterator] = function* () {
+    this[Symbol.asyncIterator] = async function* () {
       const values = Object.values(this.#employees);
       let indexCur = -1;
 
@@ -38,7 +38,6 @@ export default class Company {
   setPredicate(predicate) {
     this.#predicate = predicate ?? ((e) => true);
   }
-
   async addEmployee(employee) {
     if (!(employee instanceof Employee)) {
       throw Error(Exceptions.INVALID_EMPLOYEE_TYPE(employee));
