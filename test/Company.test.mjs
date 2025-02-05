@@ -221,4 +221,26 @@ describe("Company", () => {
       Exceptions.EMPLOYEE_ALREADY_EXISTS(Constants.ID12)
     );
   });
+  describe("iterator test", () => {
+    it("iterating all objects", () => {
+      runTest([empl1, empl2, empl3], undefined, company);
+    });
+    it("iterating objects with basic salary greater than 1000", () => {
+      runTest([empl2, empl3], (e) => e.getBasicSalary() > 1000, company);
+    });
+    it("iterating objects with basic salary less than 1000", () => {
+      runTest([], (e) => e.getBasicSalary() < 1000, company);
+    });
+  });
+  function runTest(expected, predicate, company) {
+    const comp = (e1, e2) => e1.getId() - e2.getId();
+    company.setPredicate(predicate);
+    expected = expected.toSorted(comp);
+    const actual = [];
+    for (const empl of company) {
+      actual.push(empl);
+    }
+    actual.sort(comp);
+    expect(actual).toEqual(expected);
+  }
 });
